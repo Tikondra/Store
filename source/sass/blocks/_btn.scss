@@ -1,0 +1,20 @@
+.btn {
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  color: #01b9ff;
+  border: 2px solid #01b9ff;
+  border-radius: 5px;
+  background-color: #fff;
+  transition: 0.3s ease;
+
+  &:hover {
+    background-color: #01b9ff;
+    color: #fff;
+  }
+
+  &:active {
+    background-color: darken(#01b9ff, 15%);
+  }
+}

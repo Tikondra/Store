@@ -1,0 +1,39 @@
+.pagination {
+  display: flex;
+  margin-top: 20px;
+}
+
+.pagination__list {
+  @include list;
+  display: flex;
+  margin: 0 5px;
+}
+.pagination__btn,
+.pagination__link {
+  min-width: 34px;
+  height: 34px;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.pagination__btn {
+  font-size: 20px;
+  border: none;
+}
+
+.pagination__item {
+  margin: 0 5px;
+}
+
+.pagination__link {
+  @include center-flex;
+  text-decoration: none;
+  color: #000;
+  font-size: 14px;
+  font-weight: 700;
+
+  &--active {
+    background-color: #01b9ff;
+    color: #fff;
+  }
+}

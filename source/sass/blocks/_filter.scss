@@ -1,0 +1,35 @@
+.filter {
+  max-width: 1200px;
+  margin: auto;
+  padding: 50px 20px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+.filter__btn {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+
+  svg {
+    margin-left: 10px;
+    stroke: #01b9ff;
+    transition: stroke 0.3s ease;
+  }
+
+  &:hover,
+  &--active {
+    background-color: #01b9ff;
+    color: #fff;
+
+    svg {
+      stroke: #fff;
+    }
+  }
+
+  &--up {
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+}

@@ -1,0 +1,16 @@
+.store {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px 20px 100px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.store__products {
+  width: 72%;
+}
+
+.store__basket {
+  width: 25%;
+}

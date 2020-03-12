@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap&subset=cyrillic" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.min.css">
+</head>
+<body>
+  <main>
+    <section class="filter">
+      <button class="filter__btn filter__btn--active filter__btn--up btn" type="button">
+        <span>По названию</span>
+        <svg height="15" viewBox="0 0 128 128" width="15" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke-width="12" stroke-linecap="square" stroke-miterlimit="10"><path d="M111 40.5l-47 47M64 87.5l-47-47"/></g></svg>
+      </button>
+      <button class="filter__btn btn" type="button">
+        <span>По цене</span>
+        <svg height="15" viewBox="0 0 128 128" width="15" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke-width="12" stroke-linecap="square" stroke-miterlimit="10"><path d="M111 40.5l-47 47M64 87.5l-47-47"/></g></svg>
+      </button>
+      <button class="filter__btn btn" type="button">
+        <span>По наличию</span>
+        <svg height="15" viewBox="0 0 128 128" width="15" xmlns="http://www.w3.org/2000/svg"><g fill="none" stroke-width="12" stroke-linecap="square" stroke-miterlimit="10"><path d="M111 40.5l-47 47M64 87.5l-47-47"/></g></svg>
+      </button>
+    </section>
+    <section class="store">
+      <section class="store__products products">
+        <ul class="products__list">
+          <li class="products__item">
+            <div class="products__img">
+              <img src="img/img1.jpg" width="150" height="150" alt="Наименование товара">
+            </div>
+            <div class="products__description">
+              <h3 class="products__title">Стул_1</h3>
+              <p class="products__price">300 рублей</p>
+              <p class="products__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis neque aut provident id debitis quisquam itaque alias, adipisci quidem, amet maiores, rerum.</p>
+            </div>
+            <div class="products__add add">
+              <button class="add__btn btn" type="button">Добавить в корзину</button>
+              <p class="add__message">Добавлено: <span class="add__message--count">5 товаров</span></p>
+            </div>
+          </li>
+          <li class="products__item">
+            <div class="products__img">
+              <img src="img/img1.jpg" width="150" height="150" alt="Наименование товара">
+            </div>
+            <div class="products__description">
+              <h3 class="products__title">Стул_2</h3>
+              <p class="products__price">400 рублей</p>
+              <p class="products__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt ea a quia ducimus veniam accusamus perferendis sapiente quo itaque, unde nulla.</p>
+            </div>
+            <div class="products__add add">
+              <button class="add__btn btn" type="button">Добавить в корзину</button>
+              <p class="add__message">Добавлено: <span class="add__message--count">5 товаров</span></p>
+            </div>
+          </li>
+          <li class="products__item">
+            <div class="products__img">
+              <img src="img/img1.jpg" width="150" height="150" alt="Наименование товара">
+            </div>
+            <div class="products__description">
+              <h3 class="products__title">Стул_3</h3>
+              <p class="products__price">500 рублей</p>
+              <p class="products__text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione beatae dolorem placeat, cumque illo.</p>
+            </div>
+            <div class="products__add add">
+              <button class="add__btn btn" type="button">Добавить в корзину</button>
+              <p class="add__message">Добавлено: <span class="add__message--count">5 товаров</span></p>
+            </div>
+          </li>
+        </ul>
+        <div class="products__pagination pagination">
+          <button class="pagination__btn" type="button"><</button>
+          <ul class="pagination__list">
+            <li class="pagination__item">
+              <a class="pagination__link pagination__link--active" href="">1</a>
+            </li>
+            <li class="pagination__item">
+              <a class="pagination__link" href="">2</a>
+            </li>
+            <li class="pagination__item">
+              <a class="pagination__link" href="">3</a>
+            </li>
+            <li class="pagination__item pagination__item--hide">...</li>
+            <li class="pagination__item">
+              <a class="pagination__link" href="">14</a>
+            </li>
+          </ul>
+          <button class="pagination__btn" type="button">></button>
+        </div>
+      </section>
+      <section class="store__basket basket">
+        <ul class="basket__list">
+          <li class="basket__item">
+            <div>
+              <img src="img/img1.jpg" width="30" height="30" alt="Наименование товара">
+            </div>
+            <p class="basket__title">Стул_1</p>
+            <p class="basket__count">x2</p>
+            <button class="basket__item-del" type="button">x</button>
+          </li>
+          <li class="basket__item">
+            <div>
+              <img src="img/img1.jpg" width="30" height="30" alt="Наименование товара">
+            </div>
+            <p class="basket__title">Стул_1</p>
+            <p class="basket__count">x3</p>
+            <button class="basket__item-del" type="button">x</button>
+          </li>
+        </ul>
+        <p class="basket__total">Итог</p>
+        <p class="basket__sum">300 рублей</p>
+        <a class="basket__btn btn" href="">Заказать</a>
+      </section>
+    </section>
+  </main>
+  <script src="js/store.js"></script>
+</body>
+</html>

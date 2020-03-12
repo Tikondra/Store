@@ -1,0 +1,79 @@
+.basket {
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.basket__list {
+  @include list;
+  padding: 15px;
+}
+
+.basket__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #f3f8fb;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.basket__item-del {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 14px;
+  line-height: 14px;
+  color: #9a9a9a;
+  border: none;
+  background-color: transparent;
+  outline: none;
+
+  &:hover {
+    color: #000;
+  }
+}
+
+.basket__title {
+  margin: 0 15px;
+}
+
+.basket__count {
+  margin: 0 15px 0 auto;
+}
+
+.basket__total {
+  margin: 0;
+  font-size: 16px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.basket__sum {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+  text-align: center;
+  color: #01b9ff;
+}
+
+.basket__btn {
+  display: block;
+  max-width: 200px;
+  margin: 20px auto;
+  text-decoration: none;
+  text-align: center;
+  color: #fff;
+  background-color: #01b9ff;
+
+  &:hover {
+    background-color: darken(#01b9ff, 10%);
+  }
+
+  &:active {
+    background-color: darken(#01b9ff, 15%);
+  }
+
+}
