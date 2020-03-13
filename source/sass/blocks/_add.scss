@@ -1,4 +1,5 @@
 .add__message {
+  display: none;
   font-size: 14px;
   line-height: 16px;
   font-weight: 700;
@@ -6,4 +7,12 @@
   &--count {
     color: #01b9ff;
   }
+
+  &--active {
+    display: block;
+  }
+}
+
+.add {
+  align-self: flex-start;
 }
