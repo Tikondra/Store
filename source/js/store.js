@@ -33,6 +33,14 @@
       }, debounceInterval);
     };
   };
+  /** счетчик **/
+  function makeCounter() {
+    let count = 1;
+
+    return function() {
+      return count++;
+    };
+  }
   /** созание массива данных для демострации работы **/
   for (let i = 1; i <= dataCount; i++) {
     arrayProducts.push(
@@ -71,6 +79,7 @@
     }
     delProductList();
     productList.append(fragment);
+    makeEventAdd();
   }
   /**  пагинация **/
   function pagination() {
@@ -137,35 +146,28 @@
     pagPrev.addEventListener('click', onPrevPag);
     pagNext.addEventListener('click', onNextPag);
   }
-  /** корзина **/
-  function basket () {
+  /** добавление товара в корзину **/
+  function onAddBasket (evt, count) {
+    let target = evt.target;
+    let productItem = evt.currentTarget;
+    let productImg = productItem.querySelector('img').src;
+    let productName = productItem.querySelector('.products__title').textContent;
+    let addMessage = productItem.querySelector('.add__message');
+    let addMessageCount = addMessage.querySelector('.add__message--count');
+
+    if (target.classList.contains('add__btn')) {
+      let basketItem = templateBasketItem.cloneNode(true);
+      basketItem.querySelector('img').src = productImg;
+      basketItem.querySelector('.basket__title').textContent = productName;
+      basketList.append(basketItem);
+      addMessageCount.textContent = count + ' товаров';
+      addMessage.classList.add('add__message--active');
+    }
+  }
+  /** обработчик на добавление в корзину **/
+  function makeEventAdd () {
     let cards = document.querySelectorAll('.products__item');
-    function makeCounter() {
-      let count = 1;
 
-      return function() {
-        return count++;
-      };
-    }
-
-    /** добавление товара в корзину **/
-    function onAddBasket (evt, count) {
-      let target = evt.target;
-      let productItem = evt.currentTarget;
-      let productImg = productItem.querySelector('img').src;
-      let productName = productItem.querySelector('.products__title').textContent;
-      let addMessage = productItem.querySelector('.add__message');
-      let addMessageCount = addMessage.querySelector('.add__message--count');
-
-      if (target.classList.contains('add__btn')) {
-        let basketItem = templateBasketItem.cloneNode(true);
-        basketItem.querySelector('img').src = productImg;
-        basketItem.querySelector('.basket__title').textContent = productName;
-        basketList.append(basketItem);
-        addMessageCount.textContent = count + ' товаров';
-        addMessage.classList.add('add__message--active');
-      }
-    }
     cards.forEach(function (btn) {
       let counter = makeCounter();
       btn.addEventListener('click', function (evt) {
@@ -177,5 +179,4 @@
 
   renderProductList(arrayProducts, currentPage);
   pagination();
-  basket();
 })();
