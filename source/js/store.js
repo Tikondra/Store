@@ -48,8 +48,8 @@
         id: i,
         title: 'Стул_' + i,
         image: 'https://d37kg2ecsrm74.cloudfront.net/web/ikea4/images/382/0238233_PE377690_S5.jpg',
-        descr: 'Супер стул',
-        price: 300,
+        descr: 'Супер стул № ' + i,
+        price: Math.floor(Math.random() * 1000),
         available: available[Math.floor(Math.random() * 2)]
       }
     )
@@ -73,16 +73,17 @@
       product.querySelector('img').src = dataProduct[i].image;
       product.querySelector('img').alt = dataProduct[i].descr;
       product.querySelector('.products__title').textContent = dataProduct[i].title;
-      product.querySelector('.products__price').textContent = dataProduct[i].price + ' рублей';
+      product.querySelector('.products__price span').textContent = dataProduct[i].price;
       product.querySelector('.products__text').textContent = dataProduct[i].descr;
+      product.setAttribute('data-id', dataProduct[i].id);
       fragment.append(product);
     }
     delProductList();
     productList.append(fragment);
-    makeEventAdd();
+    window.basket.makeEventAdd();
   }
   /**  пагинация **/
-  function pagination() {
+  (function pagination() {
     function setupPagination (pageNum) {
       paginationButtons.forEach(function (btn) {
         btn.classList.remove('pagination__link--active');
@@ -145,38 +146,85 @@
     });
     pagPrev.addEventListener('click', onPrevPag);
     pagNext.addEventListener('click', onNextPag);
-  }
-  /** добавление товара в корзину **/
-  function onAddBasket (evt, count) {
-    let target = evt.target;
-    let productItem = evt.currentTarget;
-    let productImg = productItem.querySelector('img').src;
-    let productName = productItem.querySelector('.products__title').textContent;
-    let addMessage = productItem.querySelector('.add__message');
-    let addMessageCount = addMessage.querySelector('.add__message--count');
+  })();
+  /** корзина **/
+  (function basket () {
+    let basket = document.querySelector('.basket');
+    let basketEmpty = basket.querySelector('.basket__empty');
+    let basketSum = basket.querySelector('.basket__sum b');
 
-    if (target.classList.contains('add__btn')) {
+    function getBasketSum (price) {
+      let sumValue = Number(basketSum.textContent);
+      return sumValue + price;
+    }
+    /** добавление товара в корзину **/
+    function addBasket (product, count) {
+      let productImg = product.querySelector('img').src;
+      let productName = product.querySelector('.products__title').textContent;
+      let productId = product.dataset.id;
+
       let basketItem = templateBasketItem.cloneNode(true);
+      basketItem.setAttribute('data-id', productId);
       basketItem.querySelector('img').src = productImg;
       basketItem.querySelector('.basket__title').textContent = productName;
+      basketItem.querySelector('.basket__count').textContent = 'x' + count;
+
       basketList.append(basketItem);
+    }
+    function updateBasketItem (itemId, itemCount) {
+      let updateItem = basket.querySelector('[data-id="' + itemId + '"]');
+      updateItem.querySelector('.basket__count').textContent = 'x' + itemCount;
+    }
+    function onAddBasket (evt, count) {
+      let basketItems = basket.querySelectorAll('.basket__item');
+      let basketIdItems = [];
+      let productItem = evt.currentTarget;
+      let productId = productItem.dataset.id;
+      let productPrice = Number(productItem.querySelector('.products__price span').textContent);
+      let addMessage = productItem.querySelector('.add__message');
+      let addMessageCount = addMessage.querySelector('.add__message--count');
+
+      if (basketItems.length === 0) {
+        addBasket(productItem, count);
+      } else {
+        basketItems.forEach(function (item) {
+          basketIdItems.push(item.dataset.id);
+        });
+        if (basketIdItems.includes(productId)) {
+          updateBasketItem(productId, count);
+        } else {
+          addBasket(productItem, count);
+        }
+      }
+
+      basketSum.textContent = getBasketSum(productPrice);
       addMessageCount.textContent = count + ' товаров';
       addMessage.classList.add('add__message--active');
+      basketEmpty.classList.add('basket__empty--hide');
     }
-  }
-  /** обработчик на добавление в корзину **/
-  function makeEventAdd () {
-    let cards = document.querySelectorAll('.products__item');
+    /** удаление позиции из корзины **/
+    function delBasketItem () {
 
-    cards.forEach(function (btn) {
-      let counter = makeCounter();
-      btn.addEventListener('click', function (evt) {
-        let count = counter();
-        onAddBasket(evt, count);
-      });
-    })
-  }
+    }
+    /** обработчик на добавление в корзину **/
+    function makeEventAdd () {
+      let cards = document.querySelectorAll('.products__item');
+
+      cards.forEach(function (btn) {
+        let counter = makeCounter();
+        btn.addEventListener('click', function (evt) {
+          if (evt.target.classList.contains('add__btn')) {
+            let count = counter();
+            onAddBasket(evt, count);
+          }
+        });
+      })
+    }
+
+    window.basket = {
+      makeEventAdd: makeEventAdd
+    }
+  })();
 
   renderProductList(arrayProducts, currentPage);
-  pagination();
 })();

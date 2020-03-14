@@ -75,5 +75,15 @@
   &:active {
     background-color: darken(#01b9ff, 15%);
   }
+}
 
+.basket__empty {
+  font-size: 30px;
+  font-weight: 700;
+  color: #26323854;
+  text-align: center;
+
+  &--hide {
+    display: none;
+  }
 }
