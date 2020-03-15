@@ -32,7 +32,7 @@
     arrayProducts.push(
       {
         id: i,
-        title: 'Стул_' + i,
+        title: 'Стул_' + Math.floor(Math.random() * 10000),
         image: 'https://d37kg2ecsrm74.cloudfront.net/web/ikea4/images/382/0238233_PE377690_S5.jpg',
         descr: 'Супер стул № ' + i,
         price: 300,
@@ -293,6 +293,48 @@
     }
     forEachKey();
   })();
+  (function filter () {
+    let sortBtn = document.querySelectorAll('.filter__btn');
+    let sortByName = document.querySelector('.filter__btn--name');
+    let sortByPrice = document.querySelector('.filter__btn--price');
+    let sortByAvailable = document.querySelector('.filter__btn--available');
 
+    sortByName.addEventListener('click', function () {
+      let sortedByName = arrayProducts.sort((a, b) => a.title > b.title ? 1 : -1);
+      let productItems = productList.querySelectorAll('.products__item');
+      productItems.forEach(function (item) {
+        item.remove();
+      });
+      renderProductList(sortedByName, currentPage);
+      sortBtn.forEach(function (item) {
+        item.classList.remove('filter__btn--active');
+      });
+      sortByName.classList.add('filter__btn--active');
+    });
+    sortByPrice.addEventListener('click', function () {
+      let sortedByPrice = arrayProducts.sort((a, b) => a.price > b.price ? 1 : -1);
+      let productItems = productList.querySelectorAll('.products__item');
+      productItems.forEach(function (item) {
+        item.remove();
+      });
+      renderProductList(sortedByPrice, currentPage);
+      sortBtn.forEach(function (item) {
+        item.classList.remove('filter__btn--active');
+      });
+      sortByPrice.classList.add('filter__btn--active');
+    });
+    sortByAvailable.addEventListener('click', function () {
+      let sortedByAvailable = arrayProducts.sort((a, b) => a.available < b.available ? 1 : -1);
+      let productItems = productList.querySelectorAll('.products__item');
+      productItems.forEach(function (item) {
+        item.remove();
+      });
+      renderProductList(sortedByAvailable, currentPage);
+      sortBtn.forEach(function (item) {
+        item.classList.remove('filter__btn--active');
+      });
+      sortByAvailable.classList.add('filter__btn--active');
+    });
+  })();
   renderProductList(arrayProducts, currentPage);
 })();
