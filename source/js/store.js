@@ -203,13 +203,8 @@
       basketItem.addEventListener('click', onDelBasketItem);
       basketList.append(basketItem);
     }
-    function updateBasketItem (itemId, itemCount) {
-      let updateItem = basket.querySelector('[data-id="' + itemId + '"]');
-      updateItem.querySelector('.basket__count').textContent = 'x' + itemCount;
-    }
     function onAddBasket (evt, count) {
       let basketItems = basket.querySelectorAll('.basket__item');
-      let basketIdItems = [];
       let productItem = evt.currentTarget;
       let productId = productItem.dataset.id;
       let productPrice = Number(productItem.querySelector('.products__price span').textContent);
@@ -219,11 +214,11 @@
       if (basketItems.length === 0) {
         addBasket(productItem, count);
       } else {
-        basketItems.forEach(function (item) {
-          basketIdItems.push(item.dataset.id);
-        });
-        if (basketIdItems.includes(productId)) {
-          updateBasketItem(productId, count);
+
+        if (basketList.querySelector('[data-id="' + productId + '"]')) {
+          let updateItem = basketList.querySelector('[data-id="' + productId + '"]');
+          updateItem.remove();
+          addBasket(productItem, count);
         } else {
           addBasket(productItem, count);
         }
@@ -247,7 +242,6 @@
         basketItem.remove();
         basketSum.textContent = getBasketSum(itemPrice, false, itemCount);
         item.querySelector('.add__message--count span').textContent = 0;
-        addCounter(item);
       }
     }
 
