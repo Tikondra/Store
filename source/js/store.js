@@ -2,8 +2,7 @@
 
 (function () {
   const available = [true, false];
-  const productCount = 2;
-  const debounceInterval = 500;
+  const productCount = 3;
   const dataCount = 3000;
   let currentPage = 1;
   let arrayProducts = []; /** тестовый массив **/
@@ -20,19 +19,6 @@
   let pagPrev = document.querySelector('.pagination__btn--prev');
   let pagNext = document.querySelector('.pagination__btn--next');
 
-  var debounce = function (cb) {
-    var lastTimeout = null;
-
-    return function () {
-      var parameters = arguments;
-      if (lastTimeout) {
-        window.clearTimeout(lastTimeout);
-      }
-      lastTimeout = window.setTimeout(function () {
-        cb.apply(null, parameters);
-      }, debounceInterval);
-    };
-  };
   /** счетчик **/
   function makeCounter() {
     let count = 1;
@@ -49,7 +35,7 @@
         title: 'Стул_' + i,
         image: 'https://d37kg2ecsrm74.cloudfront.net/web/ikea4/images/382/0238233_PE377690_S5.jpg',
         descr: 'Супер стул № ' + i,
-        price: Math.floor(Math.random() * 1000),
+        price: 300,
         available: available[Math.floor(Math.random() * 2)]
       }
     )
@@ -199,9 +185,18 @@
       basketItem.setAttribute('data-id', productId);
       basketItem.querySelector('img').src = productImg;
       basketItem.querySelector('.basket__title').textContent = productName;
-      basketItem.querySelector('.basket__count').textContent = 'x' + count;
+      basketItem.querySelector('.basket__count span').textContent = count;
       basketItem.addEventListener('click', onDelBasketItem);
       basketList.append(basketItem);
+
+      let basketItemSave = {
+        id: productId,
+        src: productImg,
+        title: productName,
+        count: count,
+        dateChange: new Date()
+      };
+      localStorage.setItem('basket' + productId, JSON.stringify(basketItemSave));
     }
     function onAddBasket (evt, count) {
       let basketItems = basket.querySelectorAll('.basket__item');
@@ -223,8 +218,9 @@
           addBasket(productItem, count);
         }
       }
-
-      basketSum.textContent = getBasketSum(productPrice, true);
+      let sumValue = getBasketSum(productPrice, true);
+      basketSum.textContent = sumValue;
+      localStorage.setItem('sum', sumValue);
       addMessageCount.textContent = count;
       addMessage.classList.add('add__message--active');
       basketEmpty.classList.add('basket__empty--hide');
@@ -236,22 +232,66 @@
       let basketItemId = basketItem.dataset.id;
       let item = productList.querySelector('[data-id="' + basketItemId + '"]');
       let itemPrice = Number(item.querySelector('.products__price span').textContent);
-      let itemCount = Number(item.querySelector('.add__message--count span').textContent);
+      let itemCount = Number(basketItem.querySelector('.basket__count span').textContent);
       let addMessage = item.querySelector('.add__message');
       let addMessageCount = addMessage.querySelector('.add__message--count span');
 
       if (evt.target === delBtn) {
         basketItem.remove();
-        basketSum.textContent = getBasketSum(itemPrice, false, itemCount);
+        let sumValue = getBasketSum(itemPrice, false, itemCount);
+        basketSum.textContent = sumValue;
+        localStorage.setItem('sum', sumValue);
+        localStorage.removeItem("basket" + basketItemId);
         addMessageCount.textContent = 0;
         addMessage.classList.remove('add__message--active');
         addCounter(item);
+        if (!basketList.querySelector('.basket__item')) {
+          basketEmpty.classList.remove('basket__empty--hide');
+        }
       }
     }
 
     window.basket = {
-      onAddBasket: onAddBasket
+      onAddBasket: onAddBasket,
+      onDelBasketItem: onDelBasketItem
     }
+  })();
+  (function localSave () {
+    let basket = document.querySelector('.basket');
+    let basketSum = basket.querySelector('.basket__sum b');
+    let basketEmpty = basket.querySelector('.basket__empty');
+
+    for (let i = 0; i < localStorage.length; i++) {
+      if (localStorage.getItem("sum")) {
+        basketSum.textContent = localStorage.getItem('sum');
+      }
+    }
+    function forEachKey() {
+      for (let i = 0; i < localStorage.length; i++) {
+        if (!localStorage.key(i).indexOf('basket')) {
+          basketEmpty.classList.add('basket__empty--hide');
+          let data = {};
+          data = JSON.parse(localStorage.getItem(localStorage.key(i)));
+
+          addBasket(data);
+          function addBasket (product) {
+            let productImg = product.src;
+            let productName = product.title;
+            let productId = product.id;
+            let productCount = product.count;
+
+            let basketItem = templateBasketItem.cloneNode(true);
+            basketItem.setAttribute('data-id', productId);
+            basketItem.querySelector('img').src = productImg;
+            basketItem.querySelector('.basket__title').textContent = productName;
+            basketItem.querySelector('.basket__count span').textContent = productCount;
+            basketItem.addEventListener('click', window.basket.onDelBasketItem);
+            basketList.append(basketItem);
+          }
+        }
+      }
+    }
+    forEachKey();
   })();
 
   renderProductList(arrayProducts, currentPage);
