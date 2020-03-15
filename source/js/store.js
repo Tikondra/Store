@@ -82,7 +82,7 @@
         window.basket.onAddBasket(evt, count);
       }
     }
-    item.addEventListener('click', onAddCounter);
+    item.onclick = onAddCounter;
   }
   /** отрисовка карточек товара **/
   function renderProductList(dataProduct, page) {
@@ -237,11 +237,15 @@
       let item = productList.querySelector('[data-id="' + basketItemId + '"]');
       let itemPrice = Number(item.querySelector('.products__price span').textContent);
       let itemCount = Number(item.querySelector('.add__message--count span').textContent);
+      let addMessage = item.querySelector('.add__message');
+      let addMessageCount = addMessage.querySelector('.add__message--count span');
 
       if (evt.target === delBtn) {
         basketItem.remove();
         basketSum.textContent = getBasketSum(itemPrice, false, itemCount);
-        item.querySelector('.add__message--count span').textContent = 0;
+        addMessageCount.textContent = 0;
+        addMessage.classList.remove('add__message--active');
+        addCounter(item);
       }
     }
 
