@@ -12,6 +12,10 @@
   &:not(:last-child) {
     margin-bottom: 20px;
   }
+
+  &--hide {
+    display: none;
+  }
 }
 
 .products__img {
