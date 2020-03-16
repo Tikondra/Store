@@ -93,7 +93,17 @@
         product.querySelector('.products__text').textContent = dataProduct[i].descr;
         product.setAttribute('data-id', dataProduct[i].id);
         product.setAttribute('data-num', i + 1);
-        addCounter(product);
+        if (basketList.querySelector('[data-id="' + dataProduct[i].id + '"]')) {
+          let count = Number(basketList.querySelector('[data-id="' + dataProduct[i].id + '"]')
+            .querySelector('.basket__count span').textContent);
+          let addMessage = product.querySelector('.add__message');
+          let addMessageCount = addMessage.querySelector('.add__message--count span');
+          addCounter(product, count);
+          addMessageCount.textContent = count;
+          addMessage.classList.add('add__message--active');
+        } else {
+          addCounter(product);
+        }
 
         fragment.append(product);
       }
@@ -284,7 +294,6 @@
             let productName = product.title;
             let productId = product.id;
             let productCount = product.count;
-            let item = productList.querySelector('[data-id="' + productId + '"]');
 
             let basketItem = templateBasketItem.cloneNode(true);
             basketItem.setAttribute('data-id', productId);
@@ -292,7 +301,7 @@
             basketItem.querySelector('.basket__title').textContent = productName;
             basketItem.querySelector('.basket__count span').textContent = productCount;
             basketItem.addEventListener('click', window.basket.onDelBasketItem);
-            addCounter(item, productCount);
+
             basketList.append(basketItem);
           }
         }
@@ -343,10 +352,8 @@
       sortByAvailable.classList.add('filter__btn--active');
     });
   })();
-  function start () {
-    renderProductList(arrayProducts, currentPage);
-    localSave();
-  }
-  start();
+
+  localSave();
+  renderProductList(arrayProducts, currentPage);
 })();
 
