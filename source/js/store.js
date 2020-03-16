@@ -2,7 +2,7 @@
 
 (function () {
   const available = [true, false];
-  const productCount = 15;
+  const productCount = 15;  /** количество товаров на страницу **/
   const dataCount = 3000;
   let currentPage = 1;
   let arrayProducts = []; /** тестовый массив **/
@@ -21,18 +21,19 @@
 
   /** счетчик **/
   function makeCounter() {
-    let count = 1;
+    function counter() {
+      return counter.currentCount++;
+    }
+    counter.currentCount = 1;
 
-    return function() {
-      return count++;
-    };
+    return counter;
   }
   /** созание массива данных для демострации работы **/
   for (let i = 1; i <= dataCount; i++) {
     arrayProducts.push(
       {
         id: i,
-        title: 'Стул_' + Math.floor(Math.random() * 10000),
+        title: 'Стул_' + i,
         image: 'https://d37kg2ecsrm74.cloudfront.net/web/ikea4/images/382/0238233_PE377690_S5.jpg',
         descr: 'Супер стул № ' + i,
         price: 300,
@@ -59,8 +60,12 @@
     }
   }
   /** Добавление счетчика **/
-  function addCounter (item) {
+  function addCounter (item, count) {
     let counter = makeCounter();
+
+    if (count) {
+      counter.currentCount = count + 1;
+    }
 
     function onAddCounter (evt) {
       if (evt.target.classList.contains('add__btn')) {
@@ -256,7 +261,7 @@
       onDelBasketItem: onDelBasketItem
     }
   })();
-  (function localSave () {
+  function localSave () {
     let basket = document.querySelector('.basket');
     let basketSum = basket.querySelector('.basket__sum b');
     let basketEmpty = basket.querySelector('.basket__empty');
@@ -279,6 +284,7 @@
             let productName = product.title;
             let productId = product.id;
             let productCount = product.count;
+            let item = productList.querySelector('[data-id="' + productId + '"]');
 
             let basketItem = templateBasketItem.cloneNode(true);
             basketItem.setAttribute('data-id', productId);
@@ -286,13 +292,14 @@
             basketItem.querySelector('.basket__title').textContent = productName;
             basketItem.querySelector('.basket__count span').textContent = productCount;
             basketItem.addEventListener('click', window.basket.onDelBasketItem);
+            addCounter(item, productCount);
             basketList.append(basketItem);
           }
         }
       }
     }
     forEachKey();
-  })();
+  }
   (function filter () {
     let sortBtn = document.querySelectorAll('.filter__btn');
     let sortByName = document.querySelector('.filter__btn--name');
@@ -336,5 +343,10 @@
       sortByAvailable.classList.add('filter__btn--active');
     });
   })();
-  renderProductList(arrayProducts, currentPage);
+  function start () {
+    renderProductList(arrayProducts, currentPage);
+    localSave();
+  }
+  start();
 })();
+
