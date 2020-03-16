@@ -2,7 +2,7 @@
 
 (function () {
   const available = [true, false];
-  const productCount = 3;
+  const productCount = 15;
   const dataCount = 3000;
   let currentPage = 1;
   let arrayProducts = []; /** тестовый массив **/
