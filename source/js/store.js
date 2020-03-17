@@ -44,20 +44,11 @@
   let lastPagValue = arrayProducts.length / productCount;
   lastPag.textContent = lastPagValue;
   /**  скрытие карточек товара **/
-  function hideProductList() {
+  function delProductList() {
     let product = document.querySelectorAll('.products__item');
     product.forEach(function (item) {
-      item.classList.add('products__item--hide');
+      item.remove();
     })
-  }
-  /** показ карточек товара **/
-  function showProductList (page) {
-    let product = document.querySelectorAll('.products__item--hide');
-    let rangeProduct = productCount * (page - 1);
-
-    for (let i = rangeProduct; i < rangeProduct + productCount; i++) {
-      product[i].classList.remove('products__item--hide');
-    }
   }
   /** Добавление счетчика **/
   function addCounter (item, count) {
@@ -79,8 +70,7 @@
   function renderProductList(dataProduct, page) {
     let rangeProduct = productCount * (page - 1);
     if (productList.querySelector('[data-num="' + (rangeProduct + 1) + '"]')) {
-      hideProductList();
-      showProductList(page);
+      delProductList();
     } else {
       let fragment = document.createDocumentFragment();
 
@@ -107,7 +97,7 @@
 
         fragment.append(product);
       }
-      hideProductList();
+      delProductList();
       productList.append(fragment);
     }
   }
