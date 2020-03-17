@@ -195,9 +195,11 @@
       let productImg = product.querySelector('img').src;
       let productName = product.querySelector('.products__title').textContent;
       let productId = product.dataset.id;
+      let productPrice = Number(product.querySelector('.products__price span').textContent);
 
       let basketItem = templateBasketItem.cloneNode(true);
       basketItem.setAttribute('data-id', productId);
+      basketItem.setAttribute('data-price', productPrice);
       basketItem.querySelector('img').src = productImg;
       basketItem.querySelector('.basket__title').textContent = productName;
       basketItem.querySelector('.basket__count span').textContent = count;
@@ -209,6 +211,7 @@
         src: productImg,
         title: productName,
         count: count,
+        price: productPrice,
         dateChange: new Date()
       };
       localStorage.setItem('basket' + productId, JSON.stringify(basketItemSave));
@@ -246,10 +249,8 @@
       let delBtn = basketItem.querySelector('.basket__item-del');
       let basketItemId = basketItem.dataset.id;
       let item = productList.querySelector('[data-id="' + basketItemId + '"]');
-      let itemPrice = Number(item.querySelector('.products__price span').textContent);
+      let itemPrice = basketItem.dataset.price;
       let itemCount = Number(basketItem.querySelector('.basket__count span').textContent);
-      let addMessage = item.querySelector('.add__message');
-      let addMessageCount = addMessage.querySelector('.add__message--count span');
 
       if (evt.target === delBtn) {
         basketItem.remove();
@@ -257,9 +258,15 @@
         basketSum.textContent = sumValue;
         localStorage.setItem('sum', sumValue);
         localStorage.removeItem("basket" + basketItemId);
-        addMessageCount.textContent = 0;
-        addMessage.classList.remove('add__message--active');
-        addCounter(item);
+        if (item) {
+          let addMessage = item.querySelector('.add__message');
+          let addMessageCount = addMessage.querySelector('.add__message--count span');
+
+          addMessageCount.textContent = 0;
+          addMessage.classList.remove('add__message--active');
+          addCounter(item);
+        }
+
         if (!basketList.querySelector('.basket__item')) {
           basketEmpty.classList.remove('basket__empty--hide');
         }
@@ -294,9 +301,11 @@
             let productName = product.title;
             let productId = product.id;
             let productCount = product.count;
+            let productPrice = product.price;
 
             let basketItem = templateBasketItem.cloneNode(true);
             basketItem.setAttribute('data-id', productId);
+            basketItem.setAttribute('data-price', productPrice);
             basketItem.querySelector('img').src = productImg;
             basketItem.querySelector('.basket__title').textContent = productName;
             basketItem.querySelector('.basket__count span').textContent = productCount;
